@@ -1,0 +1,93 @@
+-- View entire dataset
+
+SELECT *
+FROM California.diseases
+
+-- QUESTION 1: What is the overall trend of infectious diseases in California from 2001 to 2021?
+
+SELECT Year, SUM(Cases) AS Total_Cases
+FROM California.diseases
+WHERE Year BETWEEN 2001 AND 2021
+GROUP BY Year
+ORDER BY Year;
+
+-- QUESTION 2: Which counties have consistently reported the highest and lowest cases for infectious diseases?
+
+SELECT 
+    County,
+    SUM(Cases) AS Total_Cases
+FROM California.diseases
+GROUP BY County
+ORDER BY Total_Cases DESC; 
+
+-- QUESTION 3: Is there any significant difference in disease prevalence between males and females across different diseases? Not querying the total cases
+
+SELECT 
+    Disease,
+    Sex,
+    AVG(Cases) AS Average_Cases
+FROM 
+    California.diseases
+GROUP BY 
+    Disease, Sex
+ORDER BY Average_Cases DESC;
+
+
+-- QUESTION 4: Are certain diseases more prevalent in one gender compared to the other?
+
+SELECT 
+    Disease,
+    SUM(CASE WHEN Sex = 'Male' THEN Cases ELSE 0 END) AS Male_Cases,
+    SUM(CASE WHEN Sex = 'Female' THEN Cases ELSE 0 END) AS Female_Cases
+FROM 
+    California.diseases
+GROUP BY 
+    Disease
+ORDER BY 
+    Female_Cases DESC, Male_Cases DESC;
+
+
+
+-- QUESTION 5: Can we identify any trends in gender-based disease prevalence over time?
+
+SELECT 
+    Disease,
+    Year,
+    SUM(CASE WHEN Sex = 'Male' THEN Cases ELSE 0 END) AS Male_Cases,
+    SUM(CASE WHEN Sex = 'Female' THEN Cases ELSE 0 END) AS Female_Cases
+FROM 
+    California.diseases
+GROUP BY 
+    Disease, Year
+ORDER BY 
+    Year DESC, Male_Cases DESC, Female_Cases DESC
+  
+
+
+---- QUESTION 6: How do confidence intervals vary between different diseases and counties? (DONE)
+
+SELECT 
+    Disease,
+    County,
+    MAX(Upper_95__CI - Lower_95__CI) AS Confidence_Interval_Width
+FROM 
+    California.diseases
+GROUP BY 
+    Disease, County
+ORDER BY 
+    Confidence_Interval_Width DESC;
+
+
+-- QUESTION 7: How does the distribution of different diseases vary across counties and years?
+
+SELECT 
+    Disease,
+    County,
+    Year,
+    SUM(Cases) AS Total_Cases
+FROM 
+    California.diseases
+GROUP BY 
+    Disease, County, Year
+ORDER BY 
+    Disease, County, Year;
