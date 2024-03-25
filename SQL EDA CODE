@@ -9,7 +9,7 @@ SELECT Year, SUM(Cases) AS Total_Cases
 FROM California.diseases
 WHERE Year BETWEEN 2001 AND 2021
 GROUP BY Year
-ORDER BY Year;
+ORDER BY Year DESC; 
 
 -- QUESTION 2: Which counties have consistently reported the highest and lowest cases for infectious diseases?
 
@@ -20,7 +20,7 @@ FROM California.diseases
 GROUP BY County
 ORDER BY Total_Cases DESC; 
 
--- QUESTION 3: Is there any significant difference in disease prevalence between males and females across different diseases? Not querying the total cases
+-- QUESTION 3: Is there any significant difference in disease prevalence between males and females across different diseases? 
 
 SELECT 
     Disease,
